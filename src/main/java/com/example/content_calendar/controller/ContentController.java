@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.content_calendar.repository.ContentCollectionRepository;
+import com.example.content_calendar.repository.ContentRepository;
 
 import jakarta.validation.Valid;
 
@@ -30,9 +31,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 @CrossOrigin
 public class ContentController {
 
-    private final ContentCollectionRepository repository;
+    private final ContentRepository repository;
     
-    public ContentController(ContentCollectionRepository repository){
+    public ContentController(ContentRepository repository){
         this.repository = repository;
     }
 
@@ -56,7 +57,7 @@ public class ContentController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{id}")
     public void putMethodName(@PathVariable Integer id, @RequestBody Content content) {
-        if(!repository.existById(id)){
+        if(!repository.existsById(id)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         
@@ -66,7 +67,7 @@ public class ContentController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id){
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
 }
